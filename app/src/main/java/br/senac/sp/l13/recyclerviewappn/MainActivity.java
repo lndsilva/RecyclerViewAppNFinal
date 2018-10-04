@@ -2,14 +2,17 @@ package br.senac.sp.l13.recyclerviewappn;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 
 import com.pkmmte.pkrss.Article;
+import com.pkmmte.pkrss.Callback;
+import com.pkmmte.pkrss.PkRSS;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements Callback {
 
     private RecyclerView recyclerView;
     private RecyclerView.Adapter adapter;
@@ -19,5 +22,29 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        recyclerView = (RecyclerView) findViewById(R.id.id_recyclerView);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+
+        adapter = new RecyclerAdapter(list);
+        recyclerView.setAdapter(adapter);
+
+        PkRSS.with(this).load("www.androidpro.com.br/feed/").skipCache().callback(this).async();
+
+    }
+
+    @Override
+    public void onPreload() {
+        
+    }
+
+    @Override
+    public void onLoaded(List<Article> newArticles) {
+
+    }
+
+    @Override
+    public void onLoadFailed() {
+
     }
 }
